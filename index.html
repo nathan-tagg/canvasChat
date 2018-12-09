@@ -1,0 +1,235 @@
+<html>
+
+  <style>
+    .selected {
+
+    }
+
+    .picked {
+
+    }
+  </style>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript">
+   var socket = io();
+   var canvas, ctx, ctx2, flag = false,
+       prevX = 0,
+       currX = 0,
+       prevY = 0,
+       currY = 0,
+       dot_flag = false;
+
+   var x = "black",
+       y = 2.5;
+
+   function init() {
+       canvas = document.getElementById('can');
+       ctx = canvas.getContext("2d");
+       ctx2 = canvas.getContext("2d");
+       w = canvas.width;
+       h = canvas.height;
+
+       canvas.addEventListener("mousemove", function (e) {
+           findxy('move', e)
+       }, false);
+       canvas.addEventListener("mousedown", function (e) {
+           findxy('down', e)
+       }, false);
+       canvas.addEventListener("mouseup", function (e) {
+           findxy('up', e)
+       }, false);
+       canvas.addEventListener("mouseout", function (e) {
+           findxy('out', e)
+       }, false);
+   }
+
+   function color(obj) {
+       switch (obj.id) {
+           case "green":
+               x = "green";
+               break;
+           case "blue":
+               x = "blue";
+               break;
+           case "red":
+               x = "red";
+               break;
+           case "yellow":
+               x = "yellow";
+               break;
+           case "orange":
+               x = "orange";
+               break;
+           case "black":
+               x = "black";
+               break;
+           case "white":
+               x = "white";
+               break;
+       }
+   }
+
+   function resize(obj) {
+     switch (obj.id) {
+        case "sizeZero":
+          y = 40;
+          break;
+        case "sizeOne":
+          y = 20;
+          break;
+        case "sizeTwo":
+          y = 10;
+          break;
+        case "sizeThree":
+          y = 3;
+          break;
+        case "sizeFour":
+          y = 2;
+          break;
+       default:
+       y = 2.5;
+
+     }
+   }
+
+   function draw() {
+       ctx.beginPath();
+       ctx.strokeStyle = x;
+       ctx.moveTo(prevX, prevY);
+       ctx.lineTo(currX, currY);
+       ctx.lineWidth = y;
+       ctx.stroke();
+       ctx.closePath();
+       ctx.beginPath();
+       ctx.strokeStyle = x;
+            ctx.arc(currX, currY, (y / 2), 0, Math.PI * 2, true);
+            ctx.fill();
+       ctx.closePath();
+   }
+
+   function erase() {
+     ctx.clearRect(0, 0, w, h);
+     document.getElementById("canvasimg").style.display = "none";
+   }
+
+   function save() {
+       document.getElementById("canvasimg").style.border = "2px solid";
+       var dataURL = canvas.toDataURL();
+       document.getElementById("canvasimg").src = dataURL;
+       document.getElementById("canvasimg").style.display = "inline";
+   }
+
+   function findxy(res, e) {
+       if (res == 'down') {
+           prevX = currX;
+           prevY = currY;
+           currX = e.clientX - canvas.offsetLeft;
+           currY = e.clientY - canvas.offsetTop;
+
+           flag = true;
+           dot_flag = true;
+           if (dot_flag) {
+               ctx.beginPath();
+               ctx.fillStyle = x;
+               ctx.beginPath();
+                    ctx.arc(currX, currY, (y / 2), 0, Math.PI * 2, true);
+                    ctx.fill();
+               ctx.closePath();
+               dot_flag = false;
+           }
+       }
+       if (res == 'up' || res == "out") {
+           flag = false;
+       }
+       if (res == 'move') {
+           if (flag) {
+               prevX = currX;
+               prevY = currY;
+               currX = e.clientX - canvas.offsetLeft;
+               currY = e.clientY - canvas.offsetTop;
+               draw();
+               socket.emit("draw", prevX, prevY, currX, currY, x, y)
+           }
+       }
+   }
+   //socket.on("color", draw(prevX, prevY, currX, currY, x, y));
+  </script>
+  <body style="font-family: helvetica" onload="init()">
+    <h1 style="text-align: center">Drawing canvas</h1>
+      <canvas id="can" width="1000" height="500" style="position: absolute;border:2px solid; left: 250px"></canvas>
+        <div id="chat" style="top: 66px; border:2px dashed;width:200px;height:500px;">
+        <ul style="text-align: left; font-size: 10px;" ></ul>
+        <input id="field" placeholder="Wait..." type="text" style="margin-left: 15px; width: 170">
+      </div>
+    <div style="position: absolute; top: 571px; left: 44.5%;">
+      <div style="display: inline-block; width:20px;height:20px;background:green;" id="green" onclick="color(this)"></div>
+      <div style="display: inline-block; width:20px;height:20px;background:blue;" id="blue" onclick="color(this)"></div>
+      <div style="display: inline-block; width:20px;height:20px;background:red;" id="red" onclick="color(this)"></div>
+      <div style="display: inline-block; width:20px;height:20px;background:yellow;" id="yellow" onclick="color(this)"></div>
+      <div style="display: inline-block; width:20px;height:20px;background:orange;" id="orange" onclick="color(this)"></div>
+      <div class="selected" style="display: inline-block; width:20px;height:20px;background:black;" id="black" onclick="color(this)"></div>
+      <div style="display: inline-block; width:16px;height:16px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+      <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.axpPwftizX8wrWHhbJrDagHaHa%26pid%3D15.1&f=1" alt="" style="position: absolute; left: 170px; top: 0px; width:20px;height:20px;" id="clr" onclick="erase()">
+    </div>
+    <div style="position: absolute; top: 593px; left: 47%">
+      <div style="display: inline-block; width:40px;height:40px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeZero" onclick="resize(this)"></div>
+      <div style="display: inline-block; vertical-align: 7px; width:23px;height:23px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeOne" onclick="resize(this)"></div>
+      <div style="display: inline-block; vertical-align: 10px; width:15px;height:15px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeTwo" onclick="resize(this)"></div>
+      <div class="picked" style="display: inline-block; vertical-align: 11.7px; width:9px;height:9px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeThree" onclick="resize(this)"></div>
+      <div style="display: inline-block; vertical-align: 13px; width:6px;height:6px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeFour" onclick="resize(this)"></div>
+    </div>
+
+    <script>
+      var socket = io();
+      socket.on('time', function(timeString) {
+        el.innerHTML = 'Server time: ' + timeString;
+      });
+      socket.on("Start_Chat",function(){
+          $("#field").attr("placeholder","Your Name..");
+          $("#field").focus();
+      })
+      socket.on("msg",function(data){
+          $("ul").append("<li>"+data+"</li>");
+      })
+      socket.on("disconnect",function(){
+        $("ul").append("<li><strong>Error: </strong> disconnected from server! Check internet connection or try refreshing the page </li>");
+      })
+      socket.on("color", function(x1, y1, x2, y2, x3, y3){
+            ctx2.beginPath();
+            ctx2.strokeStyle = x3;
+            ctx2.moveTo(x1, y1);
+            ctx2.strokeStyle = x3;
+            ctx2.lineTo(x2, y2);
+            ctx2.strokeStyle = x3;
+            ctx2.lineWidth = y3;
+            ctx2.strokeStyle = x3;
+            ctx2.stroke();
+            ctx2.strokeStyle = x3;
+            ctx2.closePath();
+            ctx2.strokeStyle = x3;
+            ctx2.beginPath();
+            ctx2.strokeStyle = x3;
+                 ctx2.arc(x2, y2, (y3 / 2), 0, Math.PI * 2);
+                 ctx2.strokeStyle = x3;
+                 ctx2.fill();
+                 ctx2.strokeStyle = x3;
+            ctx2.closePath();
+      })
+      $("#field").on('keyup', function (e) {
+        if (e.keyCode == 13) {
+          if($("#field").attr("placeholder") ==="Your Name.."){
+               socket.emit("Register_Name",$("#field").val());
+               $("#field").val("");
+               $("#field").attr("placeholder","Your Text..");
+          } else if($("#field").attr("placeholder") == "Your Text.."){
+               socket.emit("Send_msg",$("#field").val());
+               $("#field").val("");
+               $("#field").focus();
+          }else alert("Wait...");
+        }
+      });
+    </script>
+  </body>
+</html>

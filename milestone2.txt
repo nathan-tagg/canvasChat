@@ -1,0 +1,44 @@
+After completing the assignment, please answer the questions in this text file and submit it to I-Learn.
+
+1. Project Title / One sentence description:
+
+Project title: Canvas
+Description: Canvas is a collaborative drawing tool that uses web sockets and Ajax.
+
+2. Copy and paste the URL for your web application (if applicable):
+
+https://fierce-lake-93517.herokuapp.com/
+(note - this is different from last week. I basically started over)
+
+3. Copy and paste the URL for your source code repository (e.g., GitHub):
+
+(I also created a chat room app that runs locally as a proof of concept for this app)
+
+Canvas app:
+https://github.com/nathan-tagg/milestone-2
+
+chat room app: (only runs locally)
+https://github.com/nathan-tagg/Chat-room.git
+(in directory: $ npm install; node index.js)
+(try opening localhost:3000 in several browsers to see proof of concept)
+
+4. Describe the functionality that is currently working, along with any special instructions of how to use your web application:
+
+The canvas itself is working (woohoo!) as well as the web-sockets (using socket.io). To show this, the server is sending the current server-side time and is updating an html tag with this info continuously.
+
+5. Describe the features that are not yet working correctly.
+
+The canvas is not yet collaborative. To try to figure this out I created a basic chat application using web sockets. It runs locally, but i haven't figured out why it won't work on heroku.
+Once I figure out how to run it over heroku I will be able to implement the communication on the canvas.s
+
+6. Please select the category you feel best describes your assignment:
+
+E - Shows creativity and excels above and beyond requirements
+
+7. Provide a brief justification (1-2 sentences) for selecting that category.
+
+The project is well on it's way and it looks great. I put countless hours into researching this project and even learned how to use socket.io from nothing. (I even created a chat room application just to test things out)
+
+8. Please list any questions you have for the instructor regarding this assignment or this week's topic.
+
+Why won't heroku load my page
