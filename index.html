@@ -8,6 +8,7 @@
     .picked {
 
     }
+
   </style>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -158,7 +159,7 @@
   </script>
   <body style="font-family: helvetica" onload="init()">
     <h1 style="text-align: center">Drawing canvas</h1>
-      <canvas id="can" width="1000" height="500" style="position: absolute;border:2px solid; left: 250px"></canvas>
+      <canvas id="can" width="1000" height="500" style="cursor: crosshair; position: absolute;border:2px solid; left: 250px"></canvas>
         <div id="chat" style="top: 66px; border:2px dashed;width:200px;height:500px;">
         <ul style="text-align: left; font-size: 10px;" ></ul>
         <input id="field" placeholder="Wait..." type="text" style="margin-left: 15px; width: 170">
