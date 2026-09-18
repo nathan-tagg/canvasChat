@@ -104,7 +104,7 @@
        ctx.stroke();
        ctx.closePath();
        ctx.beginPath();
-       ctx.strokeStyle = x;
+       ctx.fillStyle = x;
             ctx.arc(currX, currY, (y / 2), 0, Math.PI * 2, true);
             ctx.fill();
        ctx.closePath();
@@ -159,12 +159,12 @@
   </script>
   <body style="font-family: helvetica" onload="init()">
     <h1 style="text-align: center">Drawing canvas</h1>
-      <canvas id="can" width="1000" height="500" style="cursor: crosshair; position: absolute;border:2px solid; left: 250px"></canvas>
-        <div id="chat" style="top: 66px; border:2px dashed;width:200px;height:500px;">
+      <canvas id="can" width="1000" height="500" style="cursor: crosshair; position: absolute;border:2px solid; top: 66px; left: max(220px, calc(50% - 396px))"></canvas>
+        <div id="chat" style="position: absolute; top: 66px; left: max(8px, calc(50% - 608px)); border:2px dashed;width:200px;height:500px;">
         <ul style="text-align: left; font-size: 10px;" ></ul>
         <input id="field" placeholder="Wait..." type="text" style="margin-left: 15px; width: 170">
       </div>
-    <div style="position: absolute; top: 571px; left: 44.5%;">
+    <div style="position: absolute; top: 571px; left: max(722px, calc(50% + 106px)); transform: translateX(-50%);">
       <div style="display: inline-block; width:20px;height:20px;background:green;" id="green" onclick="color(this)"></div>
       <div style="display: inline-block; width:20px;height:20px;background:blue;" id="blue" onclick="color(this)"></div>
       <div style="display: inline-block; width:20px;height:20px;background:red;" id="red" onclick="color(this)"></div>
@@ -174,7 +174,7 @@
       <div style="display: inline-block; width:16px;height:16px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
       <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.axpPwftizX8wrWHhbJrDagHaHa%26pid%3D15.1&f=1" alt="" style="position: absolute; left: 170px; top: 0px; width:20px;height:20px;" id="clr" onclick="erase()">
     </div>
-    <div style="position: absolute; top: 593px; left: 47%">
+    <div style="position: absolute; top: 593px; left: max(722px, calc(50% + 106px)); transform: translateX(-50%)">
       <div style="display: inline-block; width:40px;height:40px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeZero" onclick="resize(this)"></div>
       <div style="display: inline-block; vertical-align: 7px; width:23px;height:23px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeOne" onclick="resize(this)"></div>
       <div style="display: inline-block; vertical-align: 10px; width:15px;height:15px;background:black;border-radius: 50%; behavior: url(PIE.htc);" id="sizeTwo" onclick="resize(this)"></div>
@@ -213,7 +213,7 @@
             ctx2.beginPath();
             ctx2.strokeStyle = x3;
                  ctx2.arc(x2, y2, (y3 / 2), 0, Math.PI * 2);
-                 ctx2.strokeStyle = x3;
+                 ctx2.fillStyle = x3;
                  ctx2.fill();
                  ctx2.strokeStyle = x3;
             ctx2.closePath();
